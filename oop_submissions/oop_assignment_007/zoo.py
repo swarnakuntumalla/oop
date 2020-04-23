@@ -57,36 +57,25 @@ class Hunt:
 class Deer(Animal):
     sound = 'Buck Buck'
     required_food = 2
-    def __init__(self, age_in_months, breed, required_food_in_kgs):
-        super().__init__(age_in_months, breed, required_food_in_kgs)
-    
         
 class Lion(Animal, Hunt):
     kill = Deer
     sound = 'Roar Roar'
     required_food = 4
-    def __init__(self, age_in_months, breed, required_food_in_kgs):
-        super().__init__(age_in_months, breed, required_food_in_kgs)
         
 class GoldFish(WaterAnimal):    
     sound = 'Hum Hum'
     required_food = 0.2
-    def __init__(self, age_in_months, breed, required_food_in_kgs):
-        super().__init__(age_in_months, breed, required_food_in_kgs)
         
 class Shark(WaterAnimal, Hunt):
     kill = GoldFish
     sound = 'Shark Sound'
     required_food = 8
-    def __init__(self, age_in_months, breed, required_food_in_kgs):
-        super().__init__(age_in_months, breed, required_food_in_kgs)
         
 class Snake(Animal, Hunt):
     kill = Deer
     sound = 'Hiss Hiss'
     required_food = 0.5
-    def __init__(self, age_in_months, breed, required_food_in_kgs):
-        super().__init__(age_in_months, breed, required_food_in_kgs)
         
 class Zoo:
     obj_list =[]
@@ -128,8 +117,8 @@ class Zoo:
     def count_animals_in_given_zoos(animal):
         count = 0
         for instance_animal in animal:
-            for i in instance_animal.animals_list:
-                count += 1
+            #print(instance_animal.animals_list)
+            count += len(instance_animal.animals_list)
         return count
         
         
