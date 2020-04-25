@@ -108,16 +108,12 @@ class Zoo:
           
     @classmethod
     def count_animals_in_all_zoos(cls):
-        count = 0
-        for instance_animal in cls.obj_list:
-           count += 1
-        return count
+        return len(cls.obj_list)
         
     @staticmethod
     def count_animals_in_given_zoos(animal):
         count = 0
         for instance_animal in animal:
-            #print(instance_animal.animals_list)
             count += len(instance_animal.animals_list)
         return count
         
