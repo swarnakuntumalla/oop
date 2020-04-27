@@ -1,5 +1,4 @@
 class Pokemon:
-    master = 'No Master'
     speak = ' '
     electric_magnitude_of_the_attack = 0
     water_magnitude_of_the_attack = 0
@@ -12,6 +11,7 @@ class Pokemon:
             raise ValueError('level should be > 0')
         self._name = name
         self._level = level
+        self._master = ''
         
     def __str__(self):
         return f'{self._name} - Level {self._level}'
@@ -25,6 +25,12 @@ class Pokemon:
     @property
     def level(self):
         return self._level
+    @property
+    def master(self):
+        if self._master == '':
+            print('No Master')
+        else:
+            return self._master
     
     @classmethod
     def make_sound(cls):
@@ -118,6 +124,7 @@ class Island:
         self._total_food_available_in_kgs = total_food_available_in_kgs
         self._pokemon_left_to_catch = 0
         self.pokemon_list = []
+        self.islands_list.append(self)
     
     @property
     def name(self):
@@ -136,8 +143,6 @@ class Island:
         if self._pokemon_left_to_catch < self._max_no_of_pokemon:
             self.pokemon_list.append(pokemon)
             self._pokemon_left_to_catch += 1
-            answer = f'{self._name} - {self._pokemon_left_to_catch} pokemon - {self._total_food_available_in_kgs} food'
-            self.islands_list.append(answer)
             
         else:
             print('Island at its max pokemon capacity')
@@ -147,14 +152,14 @@ class Island:
     
     @classmethod
     def get_all_islands(cls):
-        print(cls.islands_list)
+        return cls.islands_list
             
 class Trainer:
     def __init__(self, name):
         self._name = name
         self._experience = 100
         self._food_in_bag = 0
-        self.current_island = 'You are not on any island'
+        self._current_island =None
         self._max_food_in_bag = self._experience * 10
         self.caught_list = []
     
@@ -170,37 +175,43 @@ class Trainer:
     @property
     def max_food_in_bag(self):
         return self._max_food_in_bag
-    
+    @property
+    def current_island(self):
+        if self._current_island==None:
+            print('You are not on any island')
+        else:
+            return self._current_island
+
     def __str__(self):
         return self._name
     
     def move_to_island(self, island):
-        self.current_island = island
+        self._current_island = island
         
     def collect_food(self):
-        if self.current_island == 'You are not on any island':
+        if self._current_island ==None or self._current_island._total_food_available_in_kgs == 0:
             print('Move to an island to collect food')
-        else:
-            if self._food_in_bag + self._max_food_in_bag <= self.max_food_in_bag:
-                self._food_in_bag += self._max_food_in_bag
-        
+        elif self._current_island._total_food_available_in_kgs < self._max_food_in_bag:
+            self._food_in_bag = self._current_island._total_food_available_in_kgs
+            self.current_island._total_food_available_in_kgs = 0
+        elif self._food_in_bag != self._max_food_in_bag:
+            self._current_island._total_food_available_in_kgs -= 1000
+            self._food_in_bag = 1000
+            
     def catch(self, pokemon):
         if self._experience >= 100 * pokemon.level:
-            print(f'You caught {pokemon.name}')
             self._experience += pokemon.level * 20
             self.caught_list.append(pokemon)
-            pokemon.master = self
+            #print(pokemon)
+            pokemon._master = self
+            print(f'You caught {pokemon.name}')
         else:
             print(f'You need more experience to catch {pokemon.name}')
             
     def get_my_pokemon(self):
-        li =[]
-        for i in self.caught_list:
-            li.append(i)
-            
-        print(li)
+        return self.caught_list
         
-t = Trainer('bot')
+'''t = Trainer('bot')
 i1 = Island('Island1', 5, 10000)
 p = Pikachu('swarna',1)
 k = Pidgey('yduff', 1)
@@ -209,14 +220,15 @@ i1.add_pokemon(p)
 i1.add_pokemon(k)
 i2.add_pokemon(p)
 i2.add_pokemon(k)
-#Island.get_all_islands()
-t.move_to_island(i1)
-# #print(t.food_in_bag)
-t.collect_food()
-# #print(t.food_in_bag)
-print(i1.total_food_available_in_kgs)
-# print(p.master)
-# t.catch(p)
-# print(p.master == t)
+print(Island.get_all_islands())
+# t.move_to_island(i1)
+# # #print(t.food_in_bag)
+# t.collect_food()
+# # #print(t.food_in_bag)
+# print(i1.total_food_available_in_kgs)
+# # print(p.master)
 t.catch(p)
-print(t.food_in_bag)
+# # print(p.master == t)
+t.catch(k)
+# print(t.food_in_bag)
+t.get_my_pokemon()'''
